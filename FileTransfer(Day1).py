@@ -1,8 +1,10 @@
 import os
 import shutil
+import subprocess
 
-documentFolder = "/home/boing/Documents"
-downloadFolder = "/home/boing/Downloads"
+name = subprocess.check_output('whoami').decode('utf-8').strip()
+documentFolder = f"/home/{name}/Documents"
+downloadFolder = f"/home/{name}/Downloads"
 
 fileTypes = {}
 folderExist = []
@@ -20,12 +22,17 @@ if (fileTypes.keys() == None):
     SystemExit
   
 folderExist = list(fileTypes.keys())
-
+print(folderExist)
 for dictType in os.listdir(documentFolder):
     if (dictType in folderExist):
         folderExist.remove(dictType)
 
+
 os.chdir(documentFolder)
+if (folderExist is not None):
+    for dictName in folderExist:
+        os.mkdir(dictName)
+
 for key in list(fileTypes.keys()):
     for fileName in fileTypes[key]:
         shutil.move(fileName, os.path.abspath(key))
